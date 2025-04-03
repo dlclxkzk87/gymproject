@@ -1,12 +1,12 @@
 package gym.vo;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 public class AdminVO {
 	private int aId;
 	private String aPwd;
 	private String aName;
-	private LocalDateTime hiredate;
+	private Date hiredate;
 	private int salary;
 	private String aPhone;
 
@@ -14,7 +14,7 @@ public class AdminVO {
 		super();
 	}
 
-	public AdminVO(int aId, String aPwd, String aName, LocalDateTime hiredate, int salary, String aPhone) {
+	public AdminVO(int aId, String aPwd, String aName, Date hiredate, int salary, String aPhone) {
 		super();
 		this.aId = aId;
 		this.aPwd = aPwd;
@@ -22,6 +22,12 @@ public class AdminVO {
 		this.hiredate = hiredate;
 		this.salary = salary;
 		this.aPhone = aPhone;
+	}
+
+
+
+	public AdminVO(int aId2, String aPwd, String aName, int salary, String aPhone) {
+		// TODO Auto-generated constructor stub
 	}
 
 	public int getaId() {
@@ -48,11 +54,11 @@ public class AdminVO {
 		this.aName = aName;
 	}
 
-	public LocalDateTime getHiredate() {
+	public Date getHiredate() {
 		return hiredate;
 	}
 
-	public void setHiredate(LocalDateTime hiredate) {
+	public void setHiredate(Date hiredate) {
 		this.hiredate = hiredate;
 	}
 
