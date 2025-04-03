@@ -9,10 +9,10 @@ import gym.vo.MemberVO;
 
 public class MemberDAO {
 
-//회원등
+  // 회원 등록
   public void insertMember(MemberVO member) {
-    String sql = "INSERT INTO member (m_id, m_pwd, m_name, m_addr, m_jumin, m_phone, join_date, status, a_id) "
-               + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    String sql = "INSERT INTO member (m_id, m_pwd, m_name, m_addr, m_jumin, m_phone, join_date, status) "
+               + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     try (Connection conn = ConnectionProvider.getConnection();
          PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -25,7 +25,6 @@ public class MemberDAO {
       pstmt.setString(6, member.getMPhone());
       pstmt.setDate(7, Date.valueOf(member.getJoinDate()));
       pstmt.setString(8, member.getStatus());
-      pstmt.setString(9, member.getAId());
 
       pstmt.executeUpdate();
       System.out.println("회원 등록 완료");
@@ -36,7 +35,7 @@ public class MemberDAO {
     }
   }
 
-//회원리스트 조회
+  // 회원 리스트 조회
   public List<MemberVO> memberList() {
     List<MemberVO> list = new ArrayList<>();
     String sql = "SELECT * FROM member ORDER BY m_id";
@@ -55,7 +54,6 @@ public class MemberDAO {
         member.setMPhone(rs.getString("m_phone"));
         member.setJoinDate(rs.getDate("join_date").toLocalDate());
         member.setStatus(rs.getString("status"));
-        member.setAId(rs.getString("a_id"));
 
         list.add(member);
       }
@@ -67,9 +65,9 @@ public class MemberDAO {
     return list;
   }
 
-//회원정보수정 
+  // 회원 정보 수정
   public void updateMember(MemberVO member) {
-    String sql = "UPDATE member SET m_pwd=?, m_name=?, m_addr=?, m_jumin=?, m_phone=?, status=?, a_id=? WHERE m_id=?";
+    String sql = "UPDATE member SET m_pwd=?, m_name=?, m_addr=?, m_jumin=?, m_phone=?, status=? WHERE m_id=?";
 
     try (Connection conn = ConnectionProvider.getConnection();
          PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -80,8 +78,7 @@ public class MemberDAO {
       pstmt.setString(4, member.getMJumin());
       pstmt.setString(5, member.getMPhone());
       pstmt.setString(6, member.getStatus());
-      pstmt.setString(7, member.getAId());
-      pstmt.setInt(8, Integer.parseInt(member.getMId()));
+      pstmt.setInt(7, Integer.parseInt(member.getMId()));
 
       pstmt.executeUpdate();
       System.out.println("회원 수정 완료");
@@ -92,7 +89,7 @@ public class MemberDAO {
     }
   }
 
-//회원 삭제 
+  // 회원 삭제
   public void deleteMember(String mId) {
     String sql = "DELETE FROM member WHERE m_id=?";
 
@@ -109,7 +106,7 @@ public class MemberDAO {
     }
   }
 
-//회원 검색 
+  // 회원 검색
   public MemberVO searchMember(String mId) {
     MemberVO member = null;
     String sql = "SELECT * FROM member WHERE m_id=?";
@@ -130,7 +127,6 @@ public class MemberDAO {
         member.setMPhone(rs.getString("m_phone"));
         member.setJoinDate(rs.getDate("join_date").toLocalDate());
         member.setStatus(rs.getString("status"));
-        member.setAId(rs.getString("a_id"));
       }
 
     } catch (SQLException e) {
