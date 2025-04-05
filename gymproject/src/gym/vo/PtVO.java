@@ -6,17 +6,15 @@ public class PtVO {
 	private int uCnt;
 	private String ptType;
 	private int ptPrice;
-	private int aId;
 	private int mId;
 	
-	public PtVO(int ptId, int tCnt, int uCnt, String ptType, int ptPrice, int aId, int mId) {
+	public PtVO(int ptId, int tCnt, int uCnt, String ptType, int ptPrice, int mId) {
 		super();
 		this.ptId = ptId;
 		this.tCnt = tCnt;
 		this.uCnt = uCnt;
 		this.ptType = ptType;
 		this.ptPrice = ptPrice;
-		this.aId = aId;
 		this.mId = mId;
 	}
 
@@ -65,14 +63,6 @@ public class PtVO {
 		this.ptPrice = ptPrice;
 	}
 
-	public int getaId() {
-		return aId;
-	}
-
-	public void setaId(int aId) {
-		this.aId = aId;
-	}
-
 
 	public int getmId() {
 		return mId;
@@ -89,7 +79,6 @@ public class PtVO {
 	           ", 사용 횟수: " + uCnt +
 	           ", 유형: " + ptType +
 	           ", 가격: " + ptPrice +
-	           ", 트레이너 ID: " + aId +
 	           ", 회원 ID: " + mId + "]";
 	}
 	
