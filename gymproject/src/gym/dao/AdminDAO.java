@@ -38,14 +38,19 @@ public class AdminDAO {
 	// 관리자 정보 조회 => list 리턴
 	public ArrayList<AdminVO> adminList() {
 		ArrayList<AdminVO> list = new ArrayList<AdminVO>();
-		String sql = "select * from admin";
+		String sql = "select * from admin "
+				+ "order by a_Id ";
 		try {
 			Connection conn = ConnectionProvider.getConnection();
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
-				list.add(new AdminVO(rs.getInt("aId"), rs.getString("aPwd"), rs.getString("aName"),
-						rs.getDate("hiredate"), rs.getInt("salary"), rs.getString("aPhone")));
+				list.add(new AdminVO(rs.getInt("a_Id"),
+						rs.getString("a_Pwd"),
+						rs.getString("a_Name"),
+						rs.getDate("hiredate"),
+						rs.getInt("salary"),
+						rs.getString("a_Phone")));
 			}
 			ConnectionProvider.close(conn, stmt, rs);
 		} catch (Exception e) {
@@ -57,7 +62,7 @@ public class AdminDAO {
 	// 관리자 정보 수정(sql)
 	public static int upDateAdminById(AdminVO a) {
 		int re = -1;
-		String sql = "update admin set apwd=?, aphone=?, salary=? where aid=?";
+		String sql = "update admin set a_pwd=?, a_phone=?, salary=? where a_id=?";
 		try {
 			Connection conn = ConnectionProvider.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -74,34 +79,6 @@ public class AdminDAO {
 		return re;
 	}
 
-	// 관리자 정보 수정(java)
-	public static void upDateAdmin() {
-		Scanner sc = new Scanner(System.in);
-        System.out.print("수정할 관리자 아이디를 입력하세요: ");
-        int aId = sc.nextInt();
-        sc.nextLine(); // 버퍼 비우기
-
-        System.out.print("새 비밀번호를 입력하세요: ");
-        String Pwd = sc.nextLine();
-
-        System.out.print("새 연락처를 입력하세요: ");
-        String aPhone = sc.nextLine();
-
-        System.out.print("새 급여를 입력하세요: ");
-        int salary = sc.nextInt();
-
-        AdminVO admin = new AdminVO(aId, Pwd, null, null, salary, aPhone);
-
-        int result = upDateAdminById(admin);
-
-        if (result > 0) {
-            System.out.println("관리자 정보가 성공적으로 수정되었습니다!");
-        } else {
-            System.out.println("관리자 정보 수정에 실패했습니다.");
-        }
-        sc.close();
-	}
-
 
 	// 관리자 정보 삭제(sql)
 	public static int deleteAdminInfo(int aId) {
@@ -112,7 +89,7 @@ public class AdminDAO {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 
 			pstmt.setInt(1, aId); // 관리자 아이디
-			re = pstmt.executeUpdate(sql); // 삭제
+			re = pstmt.executeUpdate(); // 삭제
 
 			ConnectionProvider.close(conn, pstmt);
 		} catch (Exception e) {
@@ -121,53 +98,59 @@ public class AdminDAO {
 		return re;
 	}
 
-	// 관리자 정보 삭제(java)
-	public static void deleteAdmin() {
-		Scanner sc = new Scanner(System.in);
+	// 회원 목록 조회(회원정보 + 멤버쉽 정보 + pt정보)
+	public ArrayList<String> getMemberDetails() {
+	    ArrayList<String> list = new ArrayList<>();
+	    String sql = "select m.m_id, m.m_name, m.m_phone, m.m_addr, m.m_jumin, m.join_date, m.status, " +
+	                 "NVL(ms.ms_type, '-') AS ms_type, NVL(TO_CHAR(ms.ms_price), '-') AS ms_price, " +
+	                 "NVL(p.pt_type, '-') AS pt_type, NVL(TO_CHAR(p.pt_price), '-') AS pt_price, " +
+	                 "NVL(TO_CHAR(p.t_cnt), '-') AS total_count, NVL(TO_CHAR(p.u_cnt), '-') AS used_count " +
+	                 "from member m " +
+	                 "left join membership ms on m.m_id = ms.m_id " +
+	                 "left join pt p on m.m_id = p.m_id";
 
-		System.out.print("삭제할 관리자 아이디를 입력하세요: ");
-        int aId = sc.nextInt();
+	    try {
+	        Connection conn = ConnectionProvider.getConnection();
+	        Statement stmt = conn.createStatement();
+	        ResultSet rs = stmt.executeQuery(sql);
 
-        int result = deleteAdminInfo(aId);
+	        while (rs.next()) {
+	            String result = String.format(
+	                "ID: %d | 이름: %s | 연락처: %s | 주소: %s | 주민번호: %s | 가입일: %s | 상태: %s\n" +
+	                "  └ 멤버십 타입: %s | 가격: %s\n" +
+	                "  └ PT 타입: %s | 가격: %s | 총횟수: %s | 사용횟수: %s\n",
+	                rs.getInt("m_id"), rs.getString("m_name"), rs.getString("m_phone"),
+	                rs.getString("m_addr"), rs.getString("m_jumin"), rs.getDate("join_date").toString(),
+	                rs.getString("status"), rs.getString("ms_type"), rs.getString("ms_price"),
+	                rs.getString("pt_type"), rs.getString("pt_price"),
+	                rs.getString("total_count"), rs.getString("used_count")
+	            );
+	            list.add(result);
+	        }
+	        ConnectionProvider.close(conn, stmt, rs);
+	    } catch (Exception e) {
+	        System.out.println("예외발생: " + e.getMessage());
+	    }
 
-        if (result > 0) {
-            System.out.println("관리자 정보가 성공적으로 삭제되었습니다!");
-        } else {
-            System.out.println("관리자 삭제에 실패했습니다. 아이디를 다시 확인하세요.");
-        }
-        sc.close();
+	    return list;
 	}
 
-//	// pt 회원정보 조회
-//	public ArrayList<MemberVO> ptMemberList(){
-//		ArrayList<MemberVO> list = new ArrayList<MemberVO>();
-//		String sql = "select * "
-//				+ "from member m, pt p "
-//				+ "where m.m_id = p.m_id "
-//				+ "and status = '이용중'";
-//
-//		try {
-//			Connection conn = ConnectionProvider.getConnection();
-//			Statement stmt = conn.createStatement();
-//			ResultSet rs = stmt.executeQuery(sql);
-//
-//			while(rs.next()) {
-//				list.add(new MemberVO(
-//						rs.getInt("mId"),
-//						rs.getString("pWd"),
-//						rs.getString("mname"),
-//						rs.getString("mPhone"),
-//						rs.getString("mAddr"),
-//						rs.getString("mJumin"),
-//						rs.getDate("joinDate"),
-//						rs.getString("status")));
-//			}
-//			ConnectionProvider.close(conn, stmt);
-//
-//		} catch (Exception e) {
-//			System.out.println("예외발생:"+e.getMessage());
-//		}
-//		return list;
-//	}
+	// mId를 기준으로 회원 이름 반환
+	public String getMemberNameById(int mId) {
+	    String memberName = null;
+	    String sql = "SELECT name FROM member WHERE m_id = ?";
+
+	    try (Connection conn = ConnectionProvider.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setInt(1, mId);
+	        ResultSet rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            memberName = rs.getString("name");
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return memberName;
+	}
 
 }
