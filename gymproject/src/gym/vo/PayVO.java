@@ -8,17 +8,13 @@ public class PayVO {
    private LocalDateTime pDate;
    private int pPrice;
    private int mId;
-   private int msId;
-   private int ptId;
    
-   public PayVO(int pNo, String pType, int pPrice, int mId, int msId, int ptId) {
+   public PayVO(int pNo, String pType, int pPrice, int mId) {
 	super();
 	this.pNo = pNo;
 	this.pType = pType;
 	this.pPrice = pPrice;
 	this.mId = mId;
-	this.msId = msId;
-	this.ptId = ptId;
 }
 public PayVO() {
       super();
@@ -55,18 +51,6 @@ public int getpPrice() {
    public void setmId(int mId) {
       this.mId = mId;
    }
-   public int getMsId() {
-      return msId;
-   }
-   public void setMsId(int msId) {
-      this.msId = msId;
-   }
-   public int getPtId() {
-      return ptId;
-   }
-   public void setPtId(int ptId) {
-      this.ptId = ptId;
-   }
-   
+ 
    
 }
