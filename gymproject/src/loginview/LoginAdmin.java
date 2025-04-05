@@ -36,7 +36,6 @@ public class LoginAdmin {
 					pstmt.close();
 					conn.close();
 				}
-				
 			}else {
 				System.out.println("존재하지 않는 관리자 아이디입니다");
 				System.out.println();
