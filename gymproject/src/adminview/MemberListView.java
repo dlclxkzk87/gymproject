@@ -142,7 +142,6 @@ public class MemberListView {
 					(p.getMsId() == 0 ? "-" : p.getMsId()), (p.getPtId() == 0 ? "-" : p.getPtId()));
 		}
 	}
-
 	private static void savePaymentListToFile(String filePath, List<PayVO> list) {
 		File directory = new File(new File(filePath).getParent());
 		if (!directory.exists()) {
