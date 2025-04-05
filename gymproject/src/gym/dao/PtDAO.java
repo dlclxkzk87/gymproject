@@ -15,7 +15,7 @@ public class PtDAO {
     // PT 등록
     public int insertPt(PtVO pt) {
         int re = -1;
-        String sql = "insert into PT(pt_id, t_cnt, u_cnt, pt_type, pt_price, a_id, m_id) values(PT_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into PT(pt_id, t_cnt, u_cnt, pt_type, pt_price, m_id) values(PT_SEQ.NEXTVAL, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionProvider.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -24,10 +24,8 @@ public class PtDAO {
         	pstmt.setInt(2, pt.getuCnt()); // 사용 횟수 추가
         	pstmt.setString(3, pt.getPtType());
         	int price = pt.getPtType().equals("1:1") ? 50000 : 20000;
-        	pstmt.setInt(4, price);
-        	pstmt.setInt(5, pt.getaId());
-        	
-        	pstmt.setInt(6, pt.getmId());
+        	pstmt.setInt(4, price);     	
+        	pstmt.setInt(5, pt.getmId());
 
             re = pstmt.executeUpdate();
 
@@ -54,7 +52,6 @@ public class PtDAO {
                     rs.getInt("u_cnt"),
                     rs.getString("pt_type"),
                     rs.getInt("pt_price"),
-                    rs.getInt("a_id"),
                     rs.getInt("m_id")
                 ));
             }
@@ -84,7 +81,6 @@ public class PtDAO {
                     rs.getInt("u_cnt"),
                     rs.getString("pt_type"),
                     rs.getInt("pt_price"),
-                    rs.getInt("a_id"),
                     rs.getInt("m_id")
                 ));
             }
@@ -181,36 +177,6 @@ public class PtDAO {
         return used;
     }
 
-    // 트레이너 담당 회원 목록 조회
-    public List<PtVO> getPtMembersByTrainer(int aId) {
-        List<PtVO> members = new ArrayList<>();
-        String sql = "select * from PT where a_id = ?";
-
-        try (Connection conn = ConnectionProvider.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, aId);
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                PtVO pt = new PtVO(
-                    rs.getInt("pt_id"),
-                    rs.getInt("t_cnt"),
-                    rs.getInt("u_cnt"),
-                    rs.getString("pt_type"),
-                    rs.getInt("pt_price"),
-                    rs.getInt("a_id"),
-                    rs.getInt("m_id")
-                );
-                members.add(pt);
-            }
-
-        } catch (Exception e) {
-            System.out.println("트레이너 담당 회원 조회 실패: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-        return members;
-    }
+    
 }
 

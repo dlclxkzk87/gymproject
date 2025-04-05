@@ -9,31 +9,32 @@ import gym.vo.MemberVO;
 
 public class MemberDAO {
 
-  // 회원 등록
-  public void insertMember(MemberVO member) {
-    String sql = "INSERT INTO member (m_id, m_pwd, m_name, m_addr, m_jumin, m_phone, join_date, status) "
-               + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	
+	// 회원 등록
+	  public int insertMember(MemberVO member) {
+	    String sql = "INSERT INTO member (m_id, m_pwd, m_name, m_phone, m_addr, m_jumin, join_date, status) "
+	               + "VALUES (?, ?, ?, ?, ?, ?, sysdate, ?)";
+	    int re = -1;
+	    try (Connection conn = ConnectionProvider.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-    try (Connection conn = ConnectionProvider.getConnection();
-         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	      pstmt.setInt(1, member.getMId());
+	      pstmt.setString(2, member.getMPwd());
+	      pstmt.setString(3, member.getMName());
+	      pstmt.setString(4, member.getMPhone());
+	      pstmt.setString(5, member.getMAddr());
+	      pstmt.setString(6, member.getMJumin());
+	      pstmt.setString(7, member.getStatus());
 
-      pstmt.setInt(1, Integer.parseInt(member.getMId()));
-      pstmt.setString(2, member.getMPwd());
-      pstmt.setString(3, member.getMName());
-      pstmt.setString(4, member.getMAddr());
-      pstmt.setString(5, member.getMJumin());
-      pstmt.setString(6, member.getMPhone());
-      pstmt.setDate(7, Date.valueOf(member.getJoinDate()));
-      pstmt.setString(8, member.getStatus());
+	      re = pstmt.executeUpdate();
+	      System.out.println("회원 등록 완료");
 
-      pstmt.executeUpdate();
-      System.out.println("회원 등록 완료");
-
-    } catch (SQLException e) {
-      System.out.println("회원 등록 실패");
-      e.printStackTrace();
-    }
-  }
+	    } catch (SQLException e) {
+	      System.out.println("회원 등록 실패");
+	      e.printStackTrace();
+	    }
+	    return re;
+	  }
 
   // 회원 리스트 조회
   public List<MemberVO> memberList() {

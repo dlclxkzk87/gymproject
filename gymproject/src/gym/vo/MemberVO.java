@@ -4,12 +4,12 @@ import java.time.LocalDate;
 
 public class MemberVO {
 
-  private String mId;         // 회원 ID
-  private String mName;       // 회원 이름
+  private int mId;         // 회원 ID
   private String mPwd;        // 비밀번호
+  private String mName;       // 회원 이름
+  private String mPhone;      // 연락처
   private String mAddr;       // 주소
   private String mJumin;      // 주민등록번호
-  private String mPhone;      // 연락처
   private LocalDate joinDate; // 가입일
   private String status;      // 회원 상태 (이용중, 만료, 정지)
 
@@ -17,25 +17,25 @@ public class MemberVO {
   public MemberVO() {}
 
   // 전체 필드 초기화 생성자
-  public MemberVO(String mId, String mName, String mPwd, String mAddr,
-                  String mJumin, String mPhone, LocalDate joinDate,
+  public MemberVO(int mId, String mPwd, String mName, String mPhone,
+		  		  String mAddr, String mJumin, LocalDate joinDate,
                   String status) {
     this.mId = mId;
-    this.mName = mName;
     this.mPwd = mPwd;
+    this.mName = mName;
+    this.mPhone = mPhone;
     this.mAddr = mAddr;
     this.mJumin = mJumin;
-    this.mPhone = mPhone;
     this.joinDate = joinDate;
     this.status = status;
   }
 
   // Getter / Setter
-  public String getMId() {
+  public int getMId() {
     return mId;
   }
 
-  public void setMId(String mId) {
+  public void setMId(int mId) {
     this.mId = mId;
   }
 
