@@ -28,7 +28,7 @@ public class StartView {
           showRegisterMenu();
           break;
         case "2":
-//         loginView.loginMenu(); 
+         loginView.loginMenu(); 
           break;
         case "0":
           System.out.println("이용해주셔서 감사합니다.");
