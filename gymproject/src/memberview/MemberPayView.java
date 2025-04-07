@@ -1,10 +1,14 @@
 package memberview;
 
+import java.util.List;
 import java.util.Scanner;
 
+import gym.dao.MembershipDAO;
 import gym.dao.PayDAO;
+import gym.dao.PtDAO;
 import gym.vo.MemberVO;
 import gym.vo.PayVO;
+import gym.vo.PtVO;
 
 public class MemberPayView {
 	
@@ -219,12 +223,68 @@ public class MemberPayView {
         pay.setmId(memberId);
         
         int result = PayDAO.insertPayment(pay);
+        
+     // 결제 정보 저장 성공 시, PT 또는 멤버십 저장
         if (result > 0) {
             System.out.println("결제 금액: " + price);
+
+            // 멤버십 저장
+            if (productOption == 2 || productOption == 3) {
+                String msType = "";
+                if (membershipOption == 1) {
+                    msType = "1개월";
+                } else if (membershipOption == 2) {
+                    msType = "3개월";
+                } else if (membershipOption == 3) {
+                    msType = "6개월";
+                }
+
+                int msPrice = 0;
+                if (membershipOption == 1) msPrice = 110000;
+                else if (membershipOption == 2) msPrice = 180000;
+                else if (membershipOption == 3) msPrice = 360000;
+
+                int msResult = new MembershipDAO().insertMembership(msType, msPrice, memberId);
+                if (msResult > 0) {
+                    System.out.println("회원권 등록 완료");
+                } else {
+                    System.out.println("회원권 등록 실패");
+                }
+            }
+            PtDAO ptDAO = new PtDAO(); 
+
+            // PT 저장
+            if (productOption == 1 || productOption == 3) {
+                String ptType = (ptOption == 1) ? "1:1" : "1:5";
+                List<PtVO> existingPtList = ptDAO.readPtByMemberId(memberId);
+
+                if (!existingPtList.isEmpty()) {
+                    PtVO existingPt = existingPtList.get(0);
+                    int newTotalCnt = existingPt.gettCnt() + count;
+                    boolean updated = ptDAO.updatePtTotalCount(memberId, newTotalCnt);
+
+                    if (updated) {
+                        System.out.println("PT 횟수 추가 완료");
+                    } else {
+                        System.out.println("PT 업데이트 실패");
+                    }
+                } else {
+                    PtVO pt = new PtVO();
+                    pt.settCnt(count);
+                    pt.setuCnt(0);
+                    pt.setPtType(ptType);
+                    pt.setmId(memberId);
+
+                    int ptResult = ptDAO.insertPt(pt);
+                    if (ptResult > 0) {
+                        System.out.println("PT 등록 완료");
+                    } else {
+                        System.out.println("PT 등록 실패");
+                    }
+                }
+            } 
         } else {
             System.out.println("결제 실패");
-        }
-        sc.close();
-	}
-	
+        } 
+    } 
 }
