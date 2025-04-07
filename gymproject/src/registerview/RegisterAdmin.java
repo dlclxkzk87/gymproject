@@ -14,16 +14,26 @@ public class RegisterAdmin {
 		// 아이디 입력 (10~99 숫자만 허용)
 		int aId = -1;
 		while (true) {
-			System.out.print("아이디를 입력하세요 (10 ~ 99 숫자만 가능): ");
-			String input = sc.nextLine();
-			try {
-				aId = Integer.parseInt(input);
-				if (aId >= 10 && aId <= 99) break;
-				else System.out.println("10 이상 99 이하의 숫자만 입력 가능합니다.");
-			} catch (NumberFormatException e) {
-				System.out.println("숫자만 입력 가능합니다.");
-			}
+		    System.out.print("아이디를 입력하세요 (10 ~ 99 숫자만 가능): ");
+		    String input = sc.nextLine();
+		    try {
+		        aId = Integer.parseInt(input);
+		        if (aId < 10 || aId > 99) {
+		            System.out.println("10 이상 99 이하의 숫자만 입력 가능합니다.");
+		            continue;
+		        }
+
+		        if (dao.isDuplicateId(aId)) {
+		            System.out.println("이미 사용 중인 아이디입니다. 다른 번호를 입력해주세요.");
+		            continue;
+		        }
+
+		        break; 
+		    } catch (NumberFormatException e) {
+		        System.out.println("숫자만 입력 가능합니다.");
+		    }
 		}
+
 
 		// 비밀번호 입력 (영문+숫자 조합)
 		String aPwd;
