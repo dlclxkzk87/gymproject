@@ -152,5 +152,24 @@ public class AdminDAO {
 	    }
 	    return memberName;
 	}
+	
+	//아이디 중복확인 
+	public boolean isDuplicateId(int aId) {
+	    String sql = "SELECT COUNT(*) FROM admin WHERE a_id = ?";
+	    try (Connection conn = ConnectionProvider.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+	        pstmt.setInt(1, aId);
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getInt(1) > 0;
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return false;
+	}
 
 }

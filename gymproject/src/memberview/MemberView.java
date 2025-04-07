@@ -24,7 +24,7 @@ public class MemberView {
             System.out.println("\n===== 회원 메뉴 =====");
             System.out.println("1. 내 정보 보기");
             System.out.println("2. 회원 정보 수정");
-            System.out.println("3. 결제하기 / 결제 내역");
+            System.out.println("3. 결제하기");
             System.out.println("4. 회원 탈퇴");
             System.out.println("5. 로그아웃");
             System.out.print("번호 선택: ");

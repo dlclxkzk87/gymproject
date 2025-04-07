@@ -24,8 +24,9 @@ public class PayDAO {
 	//결제 등록 
 	public static int insertPayment(PayVO pay) { 
 
-		String sql = "insert into Pay (p_no, p_type, p_date, p_price, m_id) values (pay_seq.nextval, ?, sysdate, ?, ?)";
-		
+//		String sql = "insert into Pay (p_no, p_type, p_date, p_price, m_id) values (pay_seq.nextval, ?, sysdate, ?, ?)";
+		String sql = "insert into Pay (p_no, p_type, p_date, p_price, m_id) " +
+	             "values ((select nvl(max(p_no), 0) + 1 from Pay), ?, sysdate, ?, ?)";
 		try {
 			Connection conn = ConnectionProvider.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql);

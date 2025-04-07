@@ -15,7 +15,9 @@ public class PtDAO {
     // PT 등록
     public int insertPt(PtVO pt) {
         int re = -1;
-        String sql = "insert into PT(pt_id, t_cnt, u_cnt, pt_type, pt_price, m_id) values(PT_SEQ.NEXTVAL, ?, ?, ?, ?, ?)";
+//        String sql = "insert into PT(pt_id, t_cnt, u_cnt, pt_type, pt_price, m_id) values(PT_SEQ.NEXTVAL, ?, ?, ?, ?, ?)";
+        String sql = "insert into PT(pt_id, t_cnt, u_cnt, pt_type, pt_price, m_id) " +
+                "values ((select nvl(max(pt_id), 0) + 1 from PT), ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionProvider.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
