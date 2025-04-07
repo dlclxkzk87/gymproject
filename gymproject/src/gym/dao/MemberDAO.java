@@ -64,7 +64,8 @@ public class MemberDAO {
 
 		return list;
 	}
-
+	
+	//아이디 중복확인 
 	public boolean isDuplicateId(int mId) {
 	    String sql = "SELECT COUNT(*) FROM member WHERE m_id = ?";
 	    try (Connection conn = ConnectionProvider.getConnection();

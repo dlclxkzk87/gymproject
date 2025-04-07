@@ -34,25 +34,6 @@ public class AdminDAO {
 		}
 		return re;
 	}
-	
-	public boolean isDuplicateId(int aId) {
-	    String sql = "SELECT COUNT(*) FROM admin WHERE a_id = ?";
-	    try (Connection conn = ConnectionProvider.getConnection();
-	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-	        pstmt.setInt(1, aId);
-	        try (ResultSet rs = pstmt.executeQuery()) {
-	            if (rs.next()) {
-	                return rs.getInt(1) > 0;
-	            }
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-	    return false;
-	}
-
 
 	// 관리자 정보 조회 => list 리턴
 	public ArrayList<AdminVO> adminList() {
@@ -170,6 +151,25 @@ public class AdminDAO {
 	        e.printStackTrace();
 	    }
 	    return memberName;
+	}
+	
+	//아이디 중복확인 
+	public boolean isDuplicateId(int aId) {
+	    String sql = "SELECT COUNT(*) FROM admin WHERE a_id = ?";
+	    try (Connection conn = ConnectionProvider.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+	        pstmt.setInt(1, aId);
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getInt(1) > 0;
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return false;
 	}
 
 }
