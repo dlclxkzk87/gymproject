@@ -4,23 +4,25 @@ public class PtVO {
 	private int ptId;
 	private int tCnt;
 	private int uCnt;
-	private String ptType;
 	private int ptPrice;
+	private String ptType;
+	private int pNo;
 	private int mId;
 	
-	public PtVO(int ptId, int tCnt, int uCnt, String ptType, int ptPrice, int mId) {
+	public PtVO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public PtVO(int ptId, int tCnt, int uCnt, int ptPrice, String ptType, int pNo, int mId) {
 		super();
 		this.ptId = ptId;
 		this.tCnt = tCnt;
 		this.uCnt = uCnt;
-		this.ptType = ptType;
 		this.ptPrice = ptPrice;
+		this.ptType = ptType;
+		this.pNo = pNo;
 		this.mId = mId;
-	}
-
-	public PtVO() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getPtId() {
@@ -47,14 +49,6 @@ public class PtVO {
 		this.uCnt = uCnt;
 	}
 
-	public String getPtType() {
-		return ptType;
-	}
-
-	public void setPtType(String ptType) {
-		this.ptType = ptType;
-	}
-
 	public int getPtPrice() {
 		return ptPrice;
 	}
@@ -63,6 +57,21 @@ public class PtVO {
 		this.ptPrice = ptPrice;
 	}
 
+	public String getPtType() {
+		return ptType;
+	}
+
+	public void setPtType(String ptType) {
+		this.ptType = ptType;
+	}
+
+	public int getpNo() {
+		return pNo;
+	}
+
+	public void setpNo(int pNo) {
+		this.pNo = pNo;
+	}
 
 	public int getmId() {
 		return mId;
@@ -71,15 +80,7 @@ public class PtVO {
 	public void setmId(int mId) {
 		this.mId = mId;
 	}
-
-	@Override
-	public String toString() {
-	    return "[PT ID: " + ptId +
-	           ", 총 횟수: " + tCnt +
-	           ", 사용 횟수: " + uCnt +
-	           ", 유형: " + ptType +
-	           ", 가격: " + ptPrice +
-	           ", 회원 ID: " + mId + "]";
-	}
+	
+	
 	
 }

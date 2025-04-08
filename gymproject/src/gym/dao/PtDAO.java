@@ -16,8 +16,8 @@ public class PtDAO {
     public int insertPt(PtVO pt) {
         int re = -1;
 //        String sql = "insert into PT(pt_id, t_cnt, u_cnt, pt_type, pt_price, m_id) values(PT_SEQ.NEXTVAL, ?, ?, ?, ?, ?)";
-        String sql = "insert into PT(pt_id, t_cnt, u_cnt, pt_type, pt_price, m_id) " +
-                "values ((select nvl(max(pt_id), 0) + 1 from PT), ?, ?, ?, ?, ?)";
+        String sql = "insert into PT(pt_id, t_cnt, u_cnt, pt_type, pt_price, p_no, m_id) " +
+                "values ((select nvl(max(pt_id), 0) + 1 from PT), ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionProvider.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -26,13 +26,15 @@ public class PtDAO {
         	pstmt.setInt(2, pt.getuCnt()); // 사용 횟수 추가
         	pstmt.setString(3, pt.getPtType());
         	int price = pt.getPtType().equals("1:1") ? 50000 : 20000;
-        	pstmt.setInt(4, price);     	
-        	pstmt.setInt(5, pt.getmId());
+        	pstmt.setInt(4, price); 
+        	pstmt.setInt(5, pt.getpNo());
+        	pstmt.setInt(6, pt.getmId());
 
             re = pstmt.executeUpdate();
 
         } catch (Exception e) {
             System.out.println("예외발생: " + e.getMessage());
+            e.printStackTrace();
         }
 
         return re;
@@ -52,8 +54,9 @@ public class PtDAO {
                     rs.getInt("pt_id"),
                     rs.getInt("t_cnt"),
                     rs.getInt("u_cnt"),
-                    rs.getString("pt_type"),
                     rs.getInt("pt_price"),
+                    rs.getString("pt_type"),
+                    rs.getInt("p_no"),
                     rs.getInt("m_id")
                 ));
             }
@@ -81,8 +84,9 @@ public class PtDAO {
                     rs.getInt("pt_id"),
                     rs.getInt("t_cnt"),
                     rs.getInt("u_cnt"),
-                    rs.getString("pt_type"),
                     rs.getInt("pt_price"),
+                    rs.getString("pt_type"),
+                    rs.getInt("p_no"),
                     rs.getInt("m_id")
                 ));
             }
@@ -120,25 +124,18 @@ public class PtDAO {
     }
 
     // PT 전체 횟수 수정
-    public boolean updatePtTotalCount(int mId, int newTCnt) {
-        String sql = "update PT set t_cnt = ? where m_id = ?";
-        boolean isUpdated = false;
-
+    public boolean updatePtTotalCount(int mId, String ptType, int newTCnt) {
+        String sql = "UPDATE PT SET t_cnt = ? WHERE m_id = ? AND pt_type = ?";
         try (Connection conn = ConnectionProvider.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
             pstmt.setInt(1, newTCnt);
             pstmt.setInt(2, mId);
-
-            int result = pstmt.executeUpdate();
-            isUpdated = result > 0;
-
+            pstmt.setString(3, ptType);
+            return pstmt.executeUpdate() > 0;
         } catch (Exception e) {
             System.out.println("PT 전체 횟수 수정 실패: " + e.getMessage());
-            e.printStackTrace();
+            return false;
         }
-
-        return isUpdated;
     }
 
     // PT 1회 사용
@@ -178,6 +175,23 @@ public class PtDAO {
 
         return used;
     }
+    
+    public boolean hasPtOfType(int mId, String ptType) {
+        String sql = "SELECT COUNT(*) FROM PT WHERE m_id = ? AND pt_type = ?";
+        try (Connection conn = ConnectionProvider.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, mId);
+            pstmt.setString(2, ptType);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            System.out.println("PT 타입 확인 실패: " + e.getMessage());
+        }
+        return false;
+    }
+
 
     
 }

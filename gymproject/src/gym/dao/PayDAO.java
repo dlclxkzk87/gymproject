@@ -22,34 +22,40 @@ public class PayDAO {
 
 	
 	//결제 등록 
-	public static int insertPayment(PayVO pay) { 
+		public static int insertPayment(PayVO pay) { 
 
-//		String sql = "insert into Pay (p_no, p_type, p_date, p_price, m_id) values (pay_seq.nextval, ?, sysdate, ?, ?)";
-		String sql = "insert into Pay (p_no, p_type, p_date, p_price, m_id) " +
-	             "values ((select nvl(max(p_no), 0) + 1 from Pay), ?, sysdate, ?, ?)";
-		try {
-			Connection conn = ConnectionProvider.getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			 
-			pstmt.setString(1, pay.getpType());
-			pstmt.setInt(2, pay.getpPrice());
-			pstmt.setInt(3, pay.getmId());
-					
-			int result = pstmt.executeUpdate();
-			
-			if(result > 0) {
-				System.out.println("결제 성공");
-			}else {
-				System.out.println("결제 실패");
+//			String sql = "insert into Pay (p_no, p_type, p_date, p_price, m_id) values (pay_seq.nextval, ?, sysdate, ?, ?)";
+			String sql = "insert into Pay (p_no, p_type, p_date, p_price, m_id) " +
+		             "values ((select nvl(max(p_no), 0) + 1 from Pay), ?, sysdate, ?, ?)";
+			String[] returnCols = {"p_no"};
+			try {
+				Connection conn = ConnectionProvider.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				 
+				pstmt.setString(1, pay.getpType());
+				pstmt.setInt(2, pay.getpPrice());
+				pstmt.setInt(3, pay.getmId());
+						
+				int result = pstmt.executeUpdate();
+				
+				if(result > 0) {
+					System.out.println("결제 성공");
+					ResultSet rs = pstmt.getGeneratedKeys();
+		            if (rs.next()) {
+		                int pNo = rs.getInt(1);  // 생성된 p_no
+		                return pNo;
+		            }
+				}else {
+					System.out.println("결제 실패");
+				}
+				return result;
+			} catch (SQLException e) {
+				System.out.println("예외발생: " + e.getMessage());
+				return 0;
 			}
-			return result;
-		} catch (SQLException e) {
-			System.out.println("예외발생: " + e.getMessage());
-			return 0;
+			
 		}
-		
-	}
-	
+			
 	
 	//결제 목록 조회 
 	public static ArrayList<PayVO> readPaymentList(){
