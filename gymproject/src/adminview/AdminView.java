@@ -19,11 +19,14 @@ public class AdminView {
             menu = sc.nextInt();
 
             switch (menu) {
-                case 1 -> AdminSearchView.showAdminList();              
-                case 2 -> AdminUpdateView.upDateAdmin();             
-                case 3 -> AdminDeleteView.deleteAdmin();     
-                case 4 -> MemberListView.showMemberInfoMenu();       
-                case 0 -> System.out.println("로그아웃합니다.");
+                case 1 -> AdminSearchView.showAdminList();
+                case 2 -> AdminUpdateView.upDateAdmin();
+                case 3 -> AdminDeleteView.deleteAdmin();
+                case 4 -> MemberListView.showMemberInfoMenu();
+                case 0 -> {
+                	System.out.println("로그아웃합니다.");
+                	StartView.start();
+                }
                 default -> System.out.println("잘못된 입력입니다.");
             }
         } while (menu != 0);
