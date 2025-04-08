@@ -18,8 +18,10 @@ public class Login {
 					LoginMember.loginMember();
 				}else if(choice == 2) {
 					LoginAdmin.loginAdmin();
+					
 				}else if(choice == 0) {
 					break;
+					
 				}else {
 					System.out.println("잘못된 입력값 입니다\n");
 				}
