@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,40 +22,76 @@ import gym.vo.PayVO;
 public class PayDAO {
 
 	
-	//결제 등록 
-		public static int insertPayment(PayVO pay) { 
+//	//결제 등록 
+//		public static int insertPayment(PayVO pay) { 
+//
+////			String sql = "insert into Pay (p_no, p_type, p_date, p_price, m_id) values (pay_seq.nextval, ?, sysdate, ?, ?)";
+//			String sql = "insert into Pay (p_no, p_type, p_date, p_price, m_id) " +
+//		             "values ((select nvl(max(p_no), 0) + 1 from Pay), ?, sysdate, ?, ?)";
+//			String[] returnCols = {"p_no"};
+//			try {
+//				Connection conn = ConnectionProvider.getConnection();
+//				PreparedStatement pstmt = conn.prepareStatement(sql);
+//				 
+//				pstmt.setString(1, pay.getpType());
+//				pstmt.setInt(2, pay.getpPrice());
+//				pstmt.setInt(3, pay.getmId());
+//						
+//				int result = pstmt.executeUpdate();
+//				
+//				if(result > 0) {
+//					System.out.println("결제 성공");
+//					ResultSet rs = pstmt.getGeneratedKeys();
+//		            if (rs.next()) {
+//		                int pNo = rs.getInt(1);  // 생성된 p_no
+//		                return pNo;
+//		            }
+//				}else {
+//					System.out.println("결제 실패");
+//				}
+//				return result;
+//			} catch (SQLException e) {
+//				System.out.println("예외발생: " + e.getMessage());
+//				return 0;
+//			}
+//			
+//		}
+		public static int insertPayment(PayVO pay) {
+		    int nextPNo = 0;
+		    String getPnoSql = "SELECT NVL(MAX(p_no), 0) + 1 FROM pay";
+		    String insertSql = "INSERT INTO pay (p_no, p_type, p_date, p_price, m_id) " +
+		                       "VALUES (?, ?, sysdate, ?, ?)";
 
-//			String sql = "insert into Pay (p_no, p_type, p_date, p_price, m_id) values (pay_seq.nextval, ?, sysdate, ?, ?)";
-			String sql = "insert into Pay (p_no, p_type, p_date, p_price, m_id) " +
-		             "values ((select nvl(max(p_no), 0) + 1 from Pay), ?, sysdate, ?, ?)";
-			String[] returnCols = {"p_no"};
-			try {
-				Connection conn = ConnectionProvider.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(sql);
-				 
-				pstmt.setString(1, pay.getpType());
-				pstmt.setInt(2, pay.getpPrice());
-				pstmt.setInt(3, pay.getmId());
-						
-				int result = pstmt.executeUpdate();
-				
-				if(result > 0) {
-					System.out.println("결제 성공");
-					ResultSet rs = pstmt.getGeneratedKeys();
-		            if (rs.next()) {
-		                int pNo = rs.getInt(1);  // 생성된 p_no
-		                return pNo;
+		    try (Connection conn = ConnectionProvider.getConnection();
+		         Statement stmt = conn.createStatement();
+		         ResultSet rs = stmt.executeQuery(getPnoSql)) {
+
+		        if (rs.next()) {
+		            nextPNo = rs.getInt(1);
+		        }
+
+		        try (PreparedStatement pstmt = conn.prepareStatement(insertSql)) {
+		            pstmt.setInt(1, nextPNo);
+		            pstmt.setString(2, pay.getpType());
+		            pstmt.setInt(3, pay.getpPrice());
+		            pstmt.setInt(4, pay.getmId());
+
+		            int result = pstmt.executeUpdate();
+		            if (result > 0) {
+		                System.out.println("결제 성공 (p_no: " + nextPNo + ")");
+		                return nextPNo; 
+		            } else {
+		                System.out.println("결제 실패");
+		                return -1;
 		            }
-				}else {
-					System.out.println("결제 실패");
-				}
-				return result;
-			} catch (SQLException e) {
-				System.out.println("예외발생: " + e.getMessage());
-				return 0;
-			}
-			
+		        }
+
+		    } catch (SQLException e) {
+		        System.out.println("예외발생: " + e.getMessage());
+		        return -1;
+		    }
 		}
+
 			
 	
 	//결제 목록 조회 
