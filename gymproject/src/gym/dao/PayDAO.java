@@ -97,7 +97,7 @@ public class PayDAO {
 	//결제 목록 조회 
 	public static ArrayList<PayVO> readPaymentList(){
 		ArrayList<PayVO> payList = new ArrayList<>();
-		String sql = "select * from pay order by pNo";
+		String sql = "select * from pay order by p_no";
 
 		try {
 			Connection conn = ConnectionProvider.getConnection();
@@ -129,7 +129,7 @@ public class PayDAO {
 	public static ArrayList<PayVO> readPaymentByMemberLId(int mId){
 		
 		ArrayList<PayVO> payments = new ArrayList<>();
-	    String sql = "select * from pay where m_id = ? order by pNo";
+	    String sql = "select * from pay where m_id = ? order by p_no";
 	    try (Connection conn = ConnectionProvider.getConnection();
 	         PreparedStatement pstmt = conn.prepareStatement(sql)) 
 	    	{
@@ -163,7 +163,7 @@ public class PayDAO {
 	//결제일 기준 검색 통계
 	public static ArrayList<PayVO> filterPaymentByDate(LocalDateTime startDate, LocalDateTime endDate){
 		ArrayList<PayVO> payments = new ArrayList<PayVO>();
-		String sql = "select * from pay where p_date between ? and ? order by pNo";
+		String sql = "select * from pay where p_date between ? and ? order by p_no";
 	
 		try {
 			Connection conn = ConnectionProvider.getConnection();
