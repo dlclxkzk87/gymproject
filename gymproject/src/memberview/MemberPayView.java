@@ -89,7 +89,7 @@ public class MemberPayView {
 		case 1: // PT 이용권
 			productType = "PT 이용권";
 			while (true) {
-				System.out.print("원하는 PT종류를 선택하세요 1. 1:1  2. 1:5  0. 종료 ==> ");
+				System.out.print("원하는 PT종류를 선택하세요 1. 1:1  2. 5:1  0. 종료 ==> ");
 				try {
 					ptOption = Integer.parseInt(sc.nextLine());
 					if (ptOption == 0) {
@@ -158,7 +158,7 @@ public class MemberPayView {
 			productType = "PT 이용권 + 멤버십";
 			// PT
 			while (true) {
-				System.out.print("원하는 PT종류를 선택하세요 1. 1:1  2. 1:5  0. 종료 ==> ");
+				System.out.print("원하는 PT종류를 선택하세요 1. 1:1  2. 5:1  0. 종료 ==> ");
 				try {
 					ptOption = Integer.parseInt(sc.nextLine());
 					if (ptOption == 0) {
@@ -251,7 +251,7 @@ public class MemberPayView {
 		    // PT 등록
 		    if (productOption == 1 || productOption == 3) {
 		        PtDAO ptDAO = new PtDAO();
-		        String ptType = (ptOption == 1) ? "1:1" : "1:5";
+		        String ptType = (ptOption == 1) ? "1:1" : "5:1";
 
 		        List<PtVO> ptList = ptDAO.readPtByMemberId(memberId);
 		        PtVO sameTypePt = ptList.stream().filter(p -> p.getPtType().equals(ptType)).findFirst().orElse(null);
