@@ -3,73 +3,92 @@ package gym.vo;
 import java.sql.Date;
 
 public class MembershipVO {
-	private int msId;
-	private String msType;
-	private int msPrice;
-	private Date msStart;
-	private Date msEnd;
-	private int mId;
-	
-	public MembershipVO() {
-		super();
-	}
+    private int msId;       
+    private String msType;
+    private int msPrice;
+    private Date msStart;
+    private Date msEnd;
+    private int mId;
+    private int pNo;
 
-	public MembershipVO(int msId, String msType, int msPrice, Date msStart, Date msEnd, int mId) {
-		super();
-		this.msId = msId;
-		this.msType = msType;
-		this.msPrice = msPrice;
-		this.msStart = msStart;
-		this.msEnd = msEnd;
-		this.mId = mId;
-	}
+    public MembershipVO() {}
 
-	public int getMsId() {
-		return msId;
-	}
+    public MembershipVO(int msId, String msType, int msPrice, Date msStart, Date msEnd, int pNo, int mId) {
+        this.msId = msId;
+        this.msType = msType;
+        this.msPrice = msPrice;
+        this.msStart = msStart;
+        this.msEnd = msEnd;
+        this.pNo = pNo;
+        this.mId = mId;
+    }
 
-	public void setMsId(int msId) {
-		this.msId = msId;
-	}
+    public int getMsId() {
+        return msId;
+    }
 
-	public String getMsType() {
-		return msType;
-	}
+    public void setMsId(int msId) {
+        this.msId = msId;
+    }
 
-	public void setMsType(String msType) {
-		this.msType = msType;
-	}
+    public String getMsType() {
+        return msType;
+    }
 
-	public int getMsPrice() {
-		return msPrice;
-	}
+    public void setMsType(String msType) {
+        this.msType = msType;
+    }
 
-	public void setMsPrice(int msPrice) {
-		this.msPrice = msPrice;
-	}
+    public int getMsPrice() {
+        return msPrice;
+    }
 
-	public Date getMsStart() {
-		return msStart;
-	}
+    public void setMsPrice(int msPrice) {
+        this.msPrice = msPrice;
+    }
 
-	public void setMsStart(Date msStart) {
-		this.msStart = msStart;
-	}
+    public Date getMsStart() {
+        return msStart;
+    }
 
-	public Date getMsEnd() {
-		return msEnd;
-	}
+    public void setMsStart(Date msStart) {
+        this.msStart = msStart;
+    }
 
-	public void setMsEnd(Date msEnd) {
-		this.msEnd = msEnd;
-	}
+    public Date getMsEnd() {
+        return msEnd;
+    }
 
-	public int getmId() {
-		return mId;
-	}
+    public void setMsEnd(Date msEnd) {
+        this.msEnd = msEnd;
+    }
 
-	public void setmId(int mId) {
-		this.mId = mId;
-	}
-	
+    public int getmId() {
+        return mId;
+    }
+
+    public void setmId(int mId) {
+        this.mId = mId;
+    }
+
+    public int getpNo() {
+        return pNo;
+    }
+
+    public void setpNo(int pNo) {
+        this.pNo = pNo;
+    }
+
+    @Override
+    public String toString() {
+        return "MembershipVO{" +
+                "msId=" + msId +
+                ", msType='" + msType + '\'' +
+                ", msPrice=" + msPrice +
+                ", msStart=" + msStart +
+                ", msEnd=" + msEnd +
+                ", mId=" + mId +
+                ", pNo=" + pNo +
+                '}';
+    }
 }
