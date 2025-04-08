@@ -19,17 +19,6 @@ public class MemberListView {
 
 	private static final String DIR_PATH = "D:\\minproject\\산출물";
 
-	public static void showMemberDetails() {
-		AdminDAO dao = new AdminDAO();
-		ArrayList<String> details = dao.getMemberDetails();
-		for (int i = 0; i < details.size(); i++) {
-			System.out.println(details.get(i));
-			if (i != details.size() - 1) {
-				System.out.println("--------------------------------------------------------------");
-			}
-		}
-	}
-
 	public static void showMemberInfoMenu() {
 		Scanner sc = new Scanner(System.in);
 		int menu;
@@ -40,6 +29,7 @@ public class MemberListView {
 			System.out.println("2. 전체 결제목록 조회");
 			System.out.println("3. 회원의 결제내역 조회");
 			System.out.println("4. 기간별 결제내역 조회");
+			System.out.println("5. 기간별 수입 통계 조회");
 			System.out.println("0. 관리자 메뉴로 돌아가기");
 			System.out.print("선택 >> ");
 			menu = sc.nextInt();
@@ -48,24 +38,28 @@ public class MemberListView {
 			case 1 -> showMemberDetails();
 			case 2 -> readAllPayments();
 			case 3 -> {
-				System.out.print("조회할 회원 아이디를 입력하세요: ");
+				System.out.print("조회할 회원 아이디를 입력하세요 : ");
 				int mId = sc.nextInt();
 				readPaymentsByMember(mId);
 			}
 			case 4 -> {
-				sc.nextLine(); // 버퍼 비우기
-				System.out.print("시작일 (yyyy-MM-dd): ");
+				sc.nextLine();
+				System.out.print("시작일 (yyyyMMdd): ");
 				String start = sc.nextLine();
-				System.out.print("종료일 (yyyy-MM-dd): ");
+				System.out.print("종료일 (yyyyMMdd): ");
 				String end = sc.nextLine();
 
 				if (!start.matches("\\d{8}") || !end.matches("\\d{8}")) {
-			        System.out.println("❗ 날짜는 하이픈 없이 8자리(yyyyMMdd)로 입력해주세요.");
+			        System.out.println("날짜는 하이픈 없이 8자리(yyyyMMdd)로 입력해주세요.");
 			        break;
 			    }
 				readPaymentsByDateRange(start, end);
 			}
-			case 0 -> System.out.println("관리자 메뉴로 돌아갑니다.");
+			case 5 -> AdminImportStatisticsView.getPaymentStatsView();
+			case 0 -> {
+				System.out.println("관리자 메뉴로 돌아갑니다.");
+				AdminView.showAdminMenu();
+			}
 			default -> System.out.println("올바른 번호를 입력해주세요.");
 			}
 
@@ -73,14 +67,33 @@ public class MemberListView {
 		sc.close();
 	}
 
+	// 회원 정보 조회(페이징)
+	public static void showMemberDetails() {
+		Scanner sc = new Scanner(System.in);
+	    System.out.print("조회할 페이지 번호 : ");
+	    int page = sc.nextInt();
+	    int pageSize = 5;
+
+	    AdminDAO dao = new AdminDAO();
+	    ArrayList<String> details = dao.getMemberDetails(page, pageSize);
+
+	    for (int i = 0; i < details.size(); i++) {
+	        System.out.println(details.get(i));
+	        if (i != details.size() - 1) {
+	            System.out.println("--------------------------------------------------------------");
+	        }
+	    }
+	}
+
+	// 전체 결제 내역 조회
 	private static void readAllPayments() {
 		ArrayList<PayVO> list = PayDAO.readPaymentList();
 		if (list.isEmpty()) {
-			System.out.println("📭 결제 내역이 없습니다.");
+			System.out.println("결제 내역이 없습니다.");
 			return;
 		}
 
-		System.out.println("전체 결제 내역:");
+		System.out.println("전체 결제 내역 :");
 		printPaymentList(list);
 
 		String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "_결제내역.txt";
@@ -94,7 +107,7 @@ public class MemberListView {
 			return;
 		}
 
-		System.out.println("회원 결제 내역:");
+		System.out.println("회원 결제 내역 : ");
 		printPaymentList(list);
 
 		String fileName = mId + "_결제내역.txt";
@@ -116,7 +129,7 @@ public class MemberListView {
 	            return;
 	        }
 
-	        System.out.println("\n결제 내역:");
+	        System.out.println("\n결제 내역 :");
 	        printPaymentList(list);
 
 	        String fileName = start + "_" + end + "_결제내역.txt";
@@ -155,9 +168,13 @@ public class MemberListView {
 						p.getpNo(), p.getpType(), p.getpDate(), p.getpPrice(), p.getmId(),
 						(p.getMsId() == 0 ? "-" : p.getMsId()), (p.getPtId() == 0 ? "-" : p.getPtId()));
 			}
-			System.out.println("결제 내역이 파일로 저장되었습니다: " + filePath);
+			System.out.println("결제 내역이 파일로 저장되었습니다 : " + filePath);
 		} catch (IOException e) {
-			System.out.println("파일 저장 중 오류 발생: " + e.getMessage());
+			System.out.println("파일 저장 중 오류 발생 : " + e.getMessage());
 		}
 	}
+
+
+
+
 }
