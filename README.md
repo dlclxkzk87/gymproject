@@ -49,6 +49,10 @@ GYM management은 헬스장에서 회원과 관리자가 하나의 프로그램�
 > 
 > ![image](https://github.com/user-attachments/assets/2665b68d-9bea-481b-bfb6-7f88852a94ea)
 
+---
+## 데이터베이스 설게
+> ![image](https://github.com/user-attachments/assets/134b6b44-5c9c-4cf6-8c04-e4469986d4d8)
+
 
 ---
 ## 폴더 구조
