@@ -42,7 +42,7 @@ GYM management은 헬스장에서 회원과 관리자가 하나의 프로그램�
 - [x] 관리자 - 일/주/월 수입 통계 내역 조회
 ---
 
-## :액자에_담긴_그림: 서비스 화면
+## 서비스 화면
 > ![메인화면](![image](https://github.com/user-attachments/assets/0cd83494-baef-45a5-a880-a80d9414a96b))
 > ![회원메뉴](![image](https://github.com/user-attachments/assets/3c73fa43-af62-4197-a52d-716a47fdcb20)
 )
@@ -50,66 +50,8 @@ GYM management은 헬스장에서 회원과 관리자가 하나의 프로그램�
 )
 
 ---
-## :열린_파일_폴더: 폴더 구조
-```bash
-└─gymproject
-    │  .classpath
-    │  .gitignore
-    │  .project
-    │  
-    ├─.settings
-    │      org.eclipse.core.resources.prefs
-    │      org.eclipse.jdt.core.prefs
-    │      
-    ├─bin
-    │  ├─adminview
-    │  │      AdminDeleteView.class
-    │  │      AdminImportStatisticsView.class
-    │  │      AdminSearchView.class
-    │  │      AdminUpdateView.class
-    │  │      AdminView.class
-    │  │      MemberListView.class
-    │  │      
-    │  ├─db
-    │  │      ConnectionProvider.class
-    │  │      
-    │  ├─gym
-    │  │  ├─dao
-    │  │  │      AdminDAO.class
-    │  │  │      MemberDAO.class
-    │  │  │      MembershipDAO.class
-    │  │  │      PayDAO.class
-    │  │  │      PtDAO.class
-    │  │  │      
-    │  │  └─vo
-    │  │          AdminVO.class
-    │  │          MembershipVO.class
-    │  │          MemberVO.class
-    │  │          PayVO.class
-    │  │          PtVO.class
-    │  │          
-    │  ├─loginview
-    │  │      Login.class
-    │  │      LoginAdmin.class
-    │  │      LoginMember.class
-    │  │      
-    │  ├─main
-    │  │      MainTest.class
-    │  │      
-    │  ├─memberview
-    │  │      MemberDeleteView.class
-    │  │      MemberPayView.class
-    │  │      MemberSearchView.class
-    │  │      MemberUpdateView.class
-    │  │      MemberView.class
-    │  │      
-    │  ├─registerview
-    │  │      RegisterAdmin.class
-    │  │      RegisterMember.class
-    │  │      
-    │  └─startview
-    │          StartView.class
-    │          
+## 폴더 구조
+```bash         
     └─src
         ├─adminview
         │      AdminDeleteView.java
