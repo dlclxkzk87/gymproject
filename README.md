@@ -43,66 +43,18 @@ GYM management은 헬스장에서 회원과 관리자가 하나의 프로그램�
 ---
 
 ## 서비스 화면
-> ![메인화면](![image](https://github.com/user-attachments/assets/0cd83494-baef-45a5-a880-a80d9414a96b))
-> ![회원메뉴](![image](https://github.com/user-attachments/assets/3c73fa43-af62-4197-a52d-716a47fdcb20)
-)
-> ![관리자메뉴](![image](https://github.com/user-attachments/assets/cc5c5f66-76cb-44f3-a7aa-f18008f15422)
-)
+> ![image](https://github.com/user-attachments/assets/79f28b29-352b-4e26-9a8e-44d8e67521c3)
+> 
+> ![image](https://github.com/user-attachments/assets/74706329-90c5-4a73-a722-c0e8697d9e83)
+> 
+> ![image](https://github.com/user-attachments/assets/2665b68d-9bea-481b-bfb6-7f88852a94ea)
+
 
 ---
 ## 폴더 구조
-```bash         
-    └─src
-        ├─adminview
-        │      AdminDeleteView.java
-        │      AdminImportStatisticsView.java
-        │      AdminSearchView.java
-        │      AdminUpdateView.java
-        │      AdminView.java
-        │      MemberListView.java
-        │      
-        ├─db
-        │      ConnectionProvider.java
-        │      
-        ├─gym
-        │  ├─dao
-        │  │      AdminDAO.java
-        │  │      MemberDAO.java
-        │  │      MembershipDAO.java
-        │  │      PayDAO.java
-        │  │      PtDAO.java
-        │  │      
-        │  └─vo
-        │          AdminVO.java
-        │          MembershipVO.java
-        │          MemberVO.java
-        │          PayVO.java
-        │          PtVO.java
-        │          
-        ├─loginview
-        │      Login.java
-        │      LoginAdmin.java
-        │      LoginMember.java
-        │      
-        ├─main
-        │      MainTest.java
-        │      
-        ├─memberview
-        │      MemberDeleteView.java
-        │      MemberPayView.java
-        │      MemberSearchView.java
-        │      MemberUpdateView.java
-        │      MemberView.java
-        │      
-        ├─registerview
-        │      RegisterAdmin.java
-        │      RegisterMember.java
-        │      
-        └─startview
-                StartView.java
-
-
-```
+![image](https://github.com/user-attachments/assets/f5ca594c-f65b-4c2b-8c8e-6919ac3c3650)
+     
+   
 
 ## 향후 발전 과제
 - 시설 관리 기능 추가
